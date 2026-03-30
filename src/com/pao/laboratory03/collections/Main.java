@@ -1,5 +1,7 @@
 package com.pao.laboratory03.collections;
 
+import java.util.*;
+
 /**
  * Exercițiul 1 — Colecții: HashMap și TreeMap
  *
@@ -50,7 +52,50 @@ package com.pao.laboratory03.collections;
  */
 public class Main {
     public static void main(String[] args) {
-        // TODO: implementează cele 3 părți de mai sus
+
+        // PARTEA A
+        System.out.println("=== PARTEA A: HashMap — frecvența cuvintelor ===");
+
+        String[] words = {"java", "python", "java", "c++", "python", "java", "rust", "c++", "go"};
+        HashMap<String, Integer> freq = new HashMap<>();
+
+        for (String word : words) {
+            freq.put(word, freq.getOrDefault(word, 0) + 1);
+        }
+
+        System.out.println("Frecvență: " + freq);
+        System.out.println("Conține 'rust'? " + freq.containsKey("rust"));
+
+        System.out.println("Chei: " + freq.keySet());
+        System.out.println("Valori: " + freq.values());
+
+        for (Map.Entry<String, Integer> entry : freq.entrySet()) {
+            System.out.println(entry.getKey() + " -> " + entry.getValue());
+        }
+
+        // PARTEA B
+        System.out.println("\n=== PARTEA B: TreeMap — sortare automată ===");
+
+        TreeMap<String, Integer> sortedFreq = new TreeMap<>(freq);
+
+        System.out.println("Sortat: " + sortedFreq);
+        System.out.println("Prima cheie: " + sortedFreq.firstKey());
+        System.out.println("Ultima cheie: " + sortedFreq.lastKey());
+
+        // PARTEA C
+        System.out.println("\n=== PARTEA C: Map cu obiecte ===");
+
+        HashMap<String, List<String>> cursuri = new HashMap<>();
+
+        cursuri.put("PAOJ", new ArrayList<>(Arrays.asList("Ana", "Mihai", "Ion")));
+        cursuri.put("BD", new ArrayList<>(Arrays.asList("Ana", "Elena")));
+
+        System.out.println("Studenți la PAOJ: " + cursuri.get("PAOJ"));
+
+        if (cursuri.containsKey("BD")) {
+            cursuri.get("BD").add("George");
+        }
+
+        System.out.println("Studenți la BD (actualizat): " + cursuri.get("BD"));
     }
 }
-
