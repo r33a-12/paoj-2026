@@ -1,4 +1,4 @@
 package com.pao.proiect.elearning.model;
 
-public class ConfirmarePlata {
+public class LectieVideo {
 }
