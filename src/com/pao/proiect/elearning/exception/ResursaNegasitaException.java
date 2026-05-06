@@ -1,7 +1,7 @@
 package com.pao.proiect.elearning.exception;
 
-public class CursInexistentException extends Exception {
-    public CursInexistentException(String mesaj) {
-        super(mesaj);
+public class ResursaNegasitaException extends Exception {
+    public ResursaNegasitaException(String message) {
+        super(message);
     }
 }

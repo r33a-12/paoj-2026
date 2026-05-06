@@ -1,4 +1,11 @@
 package com.pao.proiect.elearning.model;
 
-public class Material {
+public abstract class Material {
+    protected String titlu;
+
+    public Material(String titlu) {
+        this.titlu = titlu;
+    }
+
+    public abstract void afiseazaInfo();
 }
