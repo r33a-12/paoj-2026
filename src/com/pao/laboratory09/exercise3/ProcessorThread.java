@@ -13,7 +13,7 @@ public class ProcessorThread implements Runnable {
     @Override
     public void run() {
         try {
-            while (activ) {
+            while (activ || coada.areElemente()) {
                 Tranzactie t = coada.extrage();
                 if (t != null) {
                     System.out.printf(Locale.US, "[Processor] Factura #%d - %.2f RON | %s\n", t.id, t.suma, t.data);

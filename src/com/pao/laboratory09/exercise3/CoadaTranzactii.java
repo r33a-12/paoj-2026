@@ -28,4 +28,8 @@ public class CoadaTranzactii {
         notifyAll();
         return t;
     }
+
+    public synchronized boolean areElemente() {
+        return !coada.isEmpty();
+    }
 }
