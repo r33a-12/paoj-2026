@@ -8,6 +8,8 @@ public class LectieVideo extends Material {
         this.durataMinute = durataMinute;
     }
 
+    public int getDurataMinute() { return durataMinute; }
+
     @Override
     public void afiseazaInfo() {
         System.out.println("Video: " + titlu + " (" + durataMinute + " min)");

@@ -8,6 +8,8 @@ public class Instructor extends MembruPlatforma {
         this.specializare = specializare;
     }
 
+    public String getSpecializare() { return specializare; }
+
     @Override
     public String getRol() {
         return "INSTRUCTOR";

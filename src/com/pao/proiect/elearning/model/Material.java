@@ -7,5 +7,7 @@ public abstract class Material {
         this.titlu = titlu;
     }
 
+    public String getTitlu() { return titlu; }
+
     public abstract void afiseazaInfo();
 }

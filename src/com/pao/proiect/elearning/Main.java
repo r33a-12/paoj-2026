@@ -4,8 +4,10 @@ import com.pao.proiect.elearning.model.*;
 import com.pao.proiect.elearning.service.*;
 import com.pao.proiect.elearning.exception.ResursaNegasitaException;
 
+import java.util.List;
+
 public class Main {
-    public static void main() {
+    public static void main(String[] args) {
         UtilizatorService uService = UtilizatorService.getInstance();
         CursService cService = CursService.getInstance();
 
@@ -15,8 +17,8 @@ public class Main {
         uService.adauga(new Student(901, "Maria Georgescu", "2025-10-15"));
         uService.adauga(new Instructor(902, "Dr. Vasile", "2024-05-10", "Securitate Cibernetica"));
         Curs cursC = new Curs(801, "C++ pentru Incepatori");
-        cursC.adaugaMaterial(new LectieVideo("Introducere C++", 60));
         cService.adauga(cursC);
+        cService.adaugaMaterialLaCurs(801, new LectieVideo("Introducere C++", 60));
 
         System.out.println("-> Sistemul contine initial 2 utilizatori si 1 curs.\n");
         uService.listeazaToti();
@@ -46,27 +48,25 @@ public class Main {
         cService.adauga(c2);
         cService.adauga(c3);
         System.out.println("VERIFICARE: Cursurile adaugate in sistem sunt:");
-        cService.afiseazaToate(); // Va afisa cursurile noi + cel de C++
+        cService.afiseazaToate();
 
         // --- ACTIUNEA 4 ---
         System.out.println("\n4. Adaugare Material (Lectie Video) la cursul 'Java Advanced'...");
         LectieVideo video = new LectieVideo("Introducere in OOP", 45);
-        c1.adaugaMaterial(video);
-        System.out.println("VERIFICARE continut curs 101:");
-        c1.afiseazaMateriale();
+        cService.adaugaMaterialLaCurs(101, video);
+        System.out.println("VERIFICARE: Material video adaugat la cursul 101.");
 
         // --- ACTIUNEA 5 ---
         System.out.println("\n5. Adaugare Material (Quiz) la cursul 'Java Advanced'...");
         Quiz quizOOP = new Quiz("Test Recapitulativ OOP", 10);
-        c1.adaugaMaterial(quizOOP);
-        System.out.println("VERIFICARE continut curs 101 (dupa update):");
-        c1.afiseazaMateriale();
+        cService.adaugaMaterialLaCurs(101, quizOOP);
+        System.out.println("VERIFICARE: Quiz adaugat la cursul 101.");
 
         // --- ACTIUNEA 6 ---
         System.out.println("\n6. Inregistrare Scor Quiz (Folosind Clasa Imutabila)...");
         ScorFinal scorStefan = new ScorFinal("REF-STEFAN-101", 95);
         cService.inregistreazaScor(101, scorStefan);
-        System.out.println("VERIFICARE Catalog Scoruri pentru Cursul 101:");
+        System.out.println("VERIFICARE Catalog Scoruri:");
         cService.afiseazaCatalog();
 
         // --- ACTIUNEA 7 ---
@@ -88,15 +88,57 @@ public class Main {
         uService.listeazaToti();
 
         // --- ACTIUNEA 9 ---
-        System.out.println("\n9. Listare Cursuri Sortate Alfabetic (Comparable + TreeSet)...");
+        System.out.println("\n9. Listare Cursuri Sortate Alfabetic...");
         System.out.println("VERIFICARE Ordinea trebuie sa fie alfabetica:");
         cService.afiseazaToate();
 
         // --- ACTIUNEA 10 ---
         System.out.println("\n10. Stergere Curs 102 ('Algoritmi de Sortare')...");
         cService.sterge(102);
-
         System.out.println("VERIFICARE Lista cursuri dupa stergere (Cursul 102 nu mai trebuie sa apara):");
         cService.afiseazaToate();
+
+        // =====================================================
+        //   DEMONSTRARE TRANZACTIE JDBC
+        // =====================================================
+        System.out.println("\n=====================================================");
+        System.out.println("   DEMONSTRARE TRANZACTIE JDBC");
+        System.out.println("=====================================================\n");
+
+        Curs cursTranzactie = new Curs(201, "Machine Learning Basics");
+        List<Material> materialeTranzactie = List.of(
+                new LectieVideo("Ce este ML?", 30),
+                new Quiz("Quiz Introducere ML", 5),
+                new LectieVideo("Regresie Liniara", 50)
+        );
+        cService.adaugaCursComplet(cursTranzactie, materialeTranzactie);
+
+        System.out.println("VERIFICARE dupa tranzactie — cursurile din BD:");
+        cService.afiseazaToate();
+
+        // Adăugăm scoruri suplimentare pentru a demonstra JOIN-urile
+        cService.inregistreazaScor(201, new ScorFinal("REF-MARIA-201", 88));
+        cService.inregistreazaScor(801, new ScorFinal("REF-STEFAN-801", 72));
+        cService.inregistreazaScor(101, new ScorFinal("REF-ANDREI-101", 91));
+
+        // =====================================================
+        //   DEMONSTRARE INTEROGARI JOIN
+        // =====================================================
+        System.out.println("\n=====================================================");
+        System.out.println("   DEMONSTRARE INTEROGARI JOIN");
+        System.out.println("=====================================================");
+
+        // JOIN 1: Cursuri cu numarul de materiale
+        cService.listeazaCursuriCuNrMateriale();
+
+        // JOIN 2: Cursuri cu scor mediu
+        cService.listeazaCursuriCuScorMediu();
+
+        // JOIN 3: Scoruri detaliate cu numele cursului
+        cService.listeazaScorDetaliatCuNumeCurs();
+
+        System.out.println("\n=====================================================");
+        System.out.println("   TOATE ACTIUNILE AU FOST LOGGATE IN audit.csv");
+        System.out.println("=====================================================");
     }
 }

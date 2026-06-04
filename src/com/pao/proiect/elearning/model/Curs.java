@@ -16,6 +16,7 @@ public class Curs implements Comparable<Curs> {
 
     public int getId() { return id; }
     public String getTitlu() { return titlu; }
+    public List<Material> getMateriale() { return materiale; }
     public void adaugaMaterial(Material m) { materiale.add(m); }
 
     public void afiseazaMateriale() {

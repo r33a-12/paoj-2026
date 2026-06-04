@@ -8,6 +8,8 @@ public class Quiz extends Material {
         this.nrIntrebari = nrIntrebari;
     }
 
+    public int getNrIntrebari() { return nrIntrebari; }
+
     @Override
     public void afiseazaInfo() {
         System.out.println("Quiz: " + titlu + " (" + nrIntrebari + " intrebari)");

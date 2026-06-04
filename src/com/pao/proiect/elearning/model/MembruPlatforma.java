@@ -7,4 +7,6 @@ public abstract class MembruPlatforma extends Utilizator {
         super(id, nume);
         this.dataInscriere = dataInscriere;
     }
+
+    public String getDataInscriere() { return dataInscriere; }
 }
