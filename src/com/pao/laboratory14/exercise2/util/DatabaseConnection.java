@@ -35,6 +35,16 @@ public class DatabaseConnection {
         String url      = props.getProperty("db.url");
         String user     = props.getProperty("db.user", "");
         String password = props.getProperty("db.password", "");
+        
+        // Asigură-te că directorul părinte există, pentru a preveni erori dacă 'output' lipsește
+        if (url != null && url.startsWith("jdbc:sqlite:")) {
+            String path = url.substring("jdbc:sqlite:".length());
+            java.io.File dbFile = new java.io.File(path);
+            if (dbFile.getParentFile() != null && !dbFile.getParentFile().exists()) {
+                dbFile.getParentFile().mkdirs();
+            }
+        }
+        
         this.connection = DriverManager.getConnection(url, user, password);
     }
 
