@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Properties;
 
 /**
@@ -64,5 +65,31 @@ public class DatabaseConnection {
             throw new RuntimeException("Eroare la reconectare: " + e.getMessage(), e);
         }
         return connection;
+    }
+
+    public void resetDatabase() {
+        try {
+            InputStream input = getClass().getClassLoader()
+                    .getResourceAsStream("com/pao/proiect/elearning/resources/schema.sql");
+            if (input == null) {
+                input = getClass().getResourceAsStream("/com/pao/proiect/elearning/resources/schema.sql");
+            }
+            if (input == null) {
+                System.err.println("[DB] Nu s-a putut incarca schema.sql pentru resetare.");
+                return;
+            }
+            String sqlScript = new String(input.readAllBytes());
+            String[] queries = sqlScript.split(";");
+            try (Statement stmt = getConnection().createStatement()) {
+                for (String query : queries) {
+                    if (!query.trim().isEmpty()) {
+                        stmt.execute(query);
+                    }
+                }
+                System.out.println("[DB] Baza de date a fost resetata la starea initiala (schema.sql).");
+            }
+        } catch (Exception e) {
+            System.err.println("[DB] Eroare la resetarea bazei de date: " + e.getMessage());
+        }
     }
 }

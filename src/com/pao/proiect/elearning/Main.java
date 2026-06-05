@@ -8,6 +8,8 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
+        com.pao.proiect.elearning.util.DatabaseConnection.getInstance().resetDatabase();
+
         UtilizatorService uService = UtilizatorService.getInstance();
         CursService cService = CursService.getInstance();
 
