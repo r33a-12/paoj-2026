@@ -21,14 +21,16 @@ public class DatabaseConnection {
     private DatabaseConnection() throws IOException, SQLException {
         Properties props = new Properties();
         try (InputStream is = getClass().getClassLoader().getResourceAsStream("db.properties")) {
-            if (is == null) {
-                throw new IOException(
-                    "db.properties nu a fost gasit pe classpath. " +
-                    "Marcheaza 'exercise2/resources/' ca Resources Root in IntelliJ: " +
-                    "clic dreapta -> Mark Directory as -> Resources Root"
-                );
+            if (is != null) {
+                props.load(is);
+            } else {
+                // Fallback direct din fișier dacă folderul nu e marcat ca Resources Root
+                try (InputStream fs = new java.io.FileInputStream("src/com/pao/laboratory14/exercise2/resources/db.properties")) {
+                    props.load(fs);
+                } catch (Exception e) {
+                    throw new IOException("Nu am putut gasi db.properties nici pe classpath, nici in folderul src/com/pao/laboratory14/exercise2/resources/.", e);
+                }
             }
-            props.load(is);
         }
         String url      = props.getProperty("db.url");
         String user     = props.getProperty("db.user", "");
